@@ -1,5 +1,3 @@
-[![Circle CI](https://circleci.com/gh/raineroviir/react-redux-socketio-chat.svg?style=svg)](https://circleci.com/gh/raineroviir/react-redux-socketio-chat)
-
 # React-redux-socketio-chat
 
 ![alt tag](ReadmeVideo.gif)
