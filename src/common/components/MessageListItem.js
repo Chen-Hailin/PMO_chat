@@ -11,11 +11,11 @@ export default class MessageListItem extends React.Component {
     const { message } = this.props;
     return (
       <li>
-        <span>
-          <b style={{color: '#66c'}}><button style={{background: 'Transparent',backgroundRepeat: 'noRepeat', border: 'none', cursor: 'pointer', overflow: 'hidden', outline: 'none'}} onClick={this.handleClick.bind(this, message.user)}>{message.user.username}</button></b>
-          <i style={{color: '#aad', opacity: '0.8'}}>{message.time}</i>
+        <span style={{paddingLeft:'1.0em'}}>
+          <b style={{color: '#DFDFE4'}}><button style={{background: 'Transparent',backgroundRepeat: 'noRepeat', border: 'none', cursor: 'pointer', overflow: 'hidden', outline: 'none'}} onClick={this.handleClick.bind(this, message.user)}>{message.user.username}</button></b>
+          <i style={{color: '#FFFFFF ', opacity: '0.8'}}>{message.time}</i>
         </span>
-        <div style={{clear: 'both', paddingTop: '0.1em', marginTop: '-1px', paddingBottom: '0.3em'}}>{message.text}</div>
+        <div style={{clear: 'both', paddingLeft:'1.8em', paddingTop: '0.1em', marginTop: '-1px', paddingBottom: '0.3em'}}>{message.text}</div>
       </li>
     );
   }

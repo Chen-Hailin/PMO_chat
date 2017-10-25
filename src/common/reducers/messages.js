@@ -8,7 +8,7 @@ const initialState = {
 export default function messages(state = initialState, action) {
   switch (action.type) {
   case ADD_MESSAGE:
-    return {...state,
+    return {...state, // keep previous state
       data: [...state.data, action.message]
     };
   case RECEIVE_MESSAGE:
