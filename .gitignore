@@ -169,4 +169,9 @@ typings/
 # Mac OS attributes tracking file
 *.DS_Store
 
+#MongoDB files
+db/
+*db/*
+*diagnostic.data*
+
 # dotenv environment variables file
