@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Button, Input } from 'react-bootstrap';
+import { Link } from 'react-router';
 import * as authActions from '../actions/authActions';
+import {fullWhite, red500, grey400, grey600} from 'material-ui/styles/colors';
+import {TextField, IconButton} from 'material-ui';
+import Report from 'material-ui/svg-icons/content/report';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SignIn extends Component {
 
@@ -18,9 +22,9 @@ class SignIn extends Component {
   }
   componentDidMount() {
     if (this.state.username.length) {
-      this.refs.passwordInput.getInputDOMNode().focus();
+      this.refs.passwordInput.focus();
     } else {
-      this.refs.usernameInput.getInputDOMNode().focus();
+      this.refs.usernameInput.focus();
     }
   }
   handleChange(event) {
@@ -35,10 +39,10 @@ class SignIn extends Component {
     event.preventDefault();
     const { dispatch } = this.props;
     if (this.state.username.length < 1) {
-      this.refs.usernameInput.getInputDOMNode().focus();
+      this.refs.usernameInput.focus();
     }
     if (this.state.username.length > 0 && this.state.password.length < 1) {
-      this.refs.passwordInput.getInputDOMNode().focus();
+      this.refs.passwordInput.focus();
     }
     if (this.state.username.length > 0 && this.state.password.length > 0) {
       var userObj = {
@@ -52,11 +56,60 @@ class SignIn extends Component {
   render() {
     return (
       <div>
-        <header style={{display: 'flex', justifyContent: 'center', background: '#000000', color: '#FFFFFF', flexGrow: '0', order: '0'}}>
-          Sign In to Chat
-        </header>
         <main style={{display: 'flex', justifyContent: 'center'}}>
-          <form onSubmit={::this.handleSubmit}>
+          <div className='middle-row'>
+            <div >
+              <img src={require('../../../static/lion_icon.png')} alt={'logo'} style={{height:'50%', width:'50%', paddingTop:'40%'}} className="img-responsive center-block"/>
+              <p style={{fontFamily:'Arial',fontSize:'25', textAlign:'center', color:'white'}}>N . E . S . I . M . S .</p>
+            </div>
+            <div>
+              <form style={{height: '20rem', justifyContent: 'center', textAlign:'center'}}>
+                <div style={{paddingRight:'48px'}}>
+                  <label style={{width:100, color:grey400}} >Username</label>
+                  <TextField
+                    name="username"
+                    placeholder="Enter username"
+                    ref="usernameInput"
+                    value={this.state.username}
+                    onChange={::this.handleChange}
+                  />
+                </div>
+                <br/>
+                <div>
+                  <label style={{width:100, color:grey400}} >Password</label>
+                  <TextField onChange={::this.handleChange}
+                             value={this.state.password}
+                             placeholder="Enter password"
+                             name="password"
+                             ref="passwordInput"
+                             type='password'
+                  />
+                  <IconButton href={'/signup/'} tooltip="Forget Login Credentials?" tooltipPosition="top-right">
+                    <Report color={fullWhite} hoverColor={red500}/>
+                  </IconButton>
+                </div>
+                <br />
+                <div style={{textAlign:'center', width:'50%', marginLeft:'25%'}}>
+                  <RaisedButton fullWidth={true} backgroundColor={grey600} label="Sign In" onClick={::this.handleSubmit}/>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+      welcomePage: state.welcomePage,
+  }
+}
+export default connect(mapStateToProps)(SignIn)
+
+/*
+<form onSubmit={::this.handleSubmit}>
             <Input
               label="Username"
               ref="usernameInput"
@@ -82,15 +135,4 @@ class SignIn extends Component {
                 <p style={{color: 'white', margin: '0', padding: '0', fontSize: '1.5em'}} >Sign In</p>
             </Button>
           </form>
-        </main>
-      </div>
-    );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-      welcomePage: state.welcomePage,
-  }
-}
-export default connect(mapStateToProps)(SignIn)
+ */

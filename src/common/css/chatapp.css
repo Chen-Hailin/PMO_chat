@@ -9,11 +9,11 @@ container {
   height: 100%;
   padding: 0;
   margin: 0;
+  background: #1d1f23;
 }
 
-.react {
+#react {
   height: 100%;
-  background: #1d1f23;
 }
 
 .nav {
@@ -70,4 +70,11 @@ span[class*="glyphicon-one-fine"] {
 
 .btn-primary {
   border: none;
+}
+
+.middle-row {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
 }

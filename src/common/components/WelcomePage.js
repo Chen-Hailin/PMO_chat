@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import {welcomePage} from '../actions/actions';
 import { connect } from 'react-redux';
-import { Input, Button } from 'react-bootstrap';
+import { Input, Button, Row, Col, Grid } from 'react-bootstrap';
 import FBSignIn from './FBSignIn';
 import SignIn from './SignIn';
+import CenterView from './CenterView';
+import TextField from 'material-ui/TextField';
 
 class WelcomePage extends Component {
 
@@ -33,85 +35,61 @@ class WelcomePage extends Component {
   }
   render() {
     const {screenWidth} = this.props;
-    if(screenWidth < 500) {
-      return (
-        <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
-          <header style={{textAlign: 'center'}}>
-            <p>Welcome to React Redux Socket.io Chat</p>
-            <p>This is an open source chat program.</p>
-          </header>
-          <main>
-          <form>
-          <Input
-            style={{height: '2.7em', fontSize: '1.3em', width: '100%'}}
-            ref="usernameInput"
-            type="text"
-            name="username"
-            value={this.state.username}
-            placeholder="Enter username"
-            onChange={::this.handleChange}
-          />
-            <Link to="/signup">
-              <Button
-                bsStyle="success"
-                style={{width: '100%'}}
-                type="submit"
-                onClick={::this.handleSubmit}>
-                  <p style={{margin: '0', padding: '0', fontSize: '1.5em'}}>Sign Up</p>
-              </Button>
-            </Link>
-            </form>
-            <p style={{margin: '1em', textAlign: 'center'}}>Or</p>
-            <Link to="/signin">
-              <Button style={{width: '100%'}} bsStyle="default" >Sign in</Button>
-            </Link>
-          </main>
-        </div>
-      );
-    }
     return (
-      <div>
-        <header style={{display: 'flex', justifyContent: 'center', flexGrow: '0', order: '0'}}>
-          <div style={{justifyContent: 'center'}}><p style={{fontSize: '1.5em', marginRight: '1em'}}>Welcome to React Redux Socket.io Chat</p>
-           <p>
-          This is an open source chat program.
-          </p>
-          </div>
-        </header>
         <main style={{display: 'flex', justifyContent: 'center'}}>
-
-          <form style={{height: '20rem', display: 'flex', justifyContent: 'center'}}>
-            <div style={{margin: 'auto', paddingRight: '0.2em', height: '3.5em'}}>
-              <Input
-                style={{height: '2.7em', fontSize: '1.3em'}}
-                ref="usernameInput"
-                type="text"
-                name="username"
-                value={this.state.username}
-                placeholder="Enter username"
-                onChange={::this.handleChange}
-              />
-            </div>
-            <section style={{margin: 'auto', width: '12em', height: '3.5em'}}>
-              <Link to="/signup">
-                <Button
-                  bsStyle="success"
-                  style={{margin: 'auto', width: '12em', height: '3.5em'}}
-                  type="submit"
-                  onClick={::this.handleSubmit}>
-                    <p style={{margin: '0', padding: '0', fontSize: '1.5em'}}>Sign Up</p>
-                </Button>
-              </Link>
-            </section>
-          </form>
-          <div style={{height: '3.5em', width: '12em', alignSelf: 'center', display: 'flex', marginLeft: '1em'}}>
-            <p style={{marginRight: '1em', marginTop: '1em'}}> Or </p>
-            <Link to="/signin">
-              <Button style={{margin: 'auto', height: '3.5em'}} bsStyle="default" >Sign in</Button>
-            </Link>
-          </div>
+          <Grid>
+            <Row className="show-grid" style={{paddingTop: '10%'}}>
+              <Col xs={6} xsOffset={3}>
+                <img src={require('../../../static/lion_icon.png')} alt={'logo'} style={{height:'50%', width:'50%'}} className="img-responsive center-block"/>
+              </Col>
+            </Row>
+            <Row className="show-grid">
+              <Col xs={6} xsOffset={3}>
+                <p style={{fontFamily:'Arial',fontSize:'25', textAlign:'center'}}>N . E . S . I . M . S .</p>
+              </Col>
+            </Row>
+            <Row className="show-grid">
+              <Col xs={6} xsOffset={3}>
+                <form style={{height: '20rem', display: 'flex', justifyContent: 'center'}}>
+                  <div style={{margin: 'auto', paddingRight: '0.2em', height: '3.5em'}}>
+                    <TextField>
+                      <Input
+                        style={{height: '2.7em', fontSize: '1.3em'}}
+                        ref="usernameInput"
+                        type="text"
+                        name="username"
+                        value={this.state.username}
+                        placeholder="Enter username"
+                        onChange={::this.handleChange}
+                      />
+                    </TextField>
+                  </div>
+                  <section style={{margin: 'auto', width: '12em', height: '3.5em'}}>
+                    <Link to="/signup">
+                      <Button
+                        bsStyle="success"
+                        style={{margin: 'auto', width: '12em', height: '3.5em'}}
+                        type="submit"
+                        onClick={::this.handleSubmit}>
+                        <p style={{margin: '0', padding: '0', fontSize: '1.5em'}}>Sign Up</p>
+                      </Button>
+                    </Link>
+                  </section>
+                </form>
+              </Col>
+            </Row>
+            <Row className="show-grid">
+              <Col xs={6} xsOffset={3}>
+                <div style={{height: '3.5em', width: '12em', alignSelf: 'center', display: 'flex', marginLeft: '1em'}}>
+                  <p style={{marginRight: '1em', marginTop: '1em'}}> Or </p>
+                  <Link to="/signin">
+                    <Button style={{margin: 'auto', height: '3.5em'}} bsStyle="default" >Sign in</Button>
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </Grid>
         </main>
-      </div>
     );
   }
 }

@@ -83,18 +83,9 @@ app.get('/*', function(req, res) {
     if(!renderProps) {
       return res.status(404).end('Not found');
     }
-    const InitialView = (
-      <Provider className="root" store={store}>
-        <div style={{height: '100%'}}>
-          <RouterContext {...renderProps} />
-          {process.env.NODE_ENV !== 'production' && <DevTools />}
-        </div>
-      </Provider>
-    );
 
     const finalState = store.getState();
-    const html = renderToString(InitialView)
-    res.status(200).end(renderFullPage(html, finalState));
+    res.status(200).end(renderFullPage(finalState));
   })
 })
 
@@ -106,10 +97,10 @@ const server = app.listen(process.env.PORT, 'localhost', function(err) {
   console.log('server listening on port: %s', process.env.PORT);
 });
 
-const io = new SocketIo(server, {path: '/api/chat'})
+const io = new SocketIo(server, {path: '/api/chat'});
 const socketEvents = require('./socketEvents')(io);
 
-function renderFullPage(html, initialState) {
+function renderFullPage(initialState) {
   return `
     <!doctype html>
     <html lang="en">
@@ -122,7 +113,7 @@ function renderFullPage(html, initialState) {
         <title>React Redux Socket.io Chat</title>
       </head>
       <body>
-        <container id="react">${html}</container>
+        <container id="react"></container>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
