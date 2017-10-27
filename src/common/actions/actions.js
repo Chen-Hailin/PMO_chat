@@ -12,6 +12,13 @@ function addMessage(message) {
     };
 }
 
+export function approveCase(channel) {
+    return {
+        type: types.APPROVE_CHANNEL,
+        channel
+    }
+}
+
 export function receiveRawMessage(message) {
     return {
         type: types.RECEIVE_MESSAGE,

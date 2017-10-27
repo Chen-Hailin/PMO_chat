@@ -1,5 +1,6 @@
 import {
     ADD_CHANNEL,
+    APPROVE_CHANNEL,
     RECEIVE_CHANNEL,
     LOAD_CHANNELS,
     LOAD_CHANNELS_SUCCESS,
@@ -22,6 +23,14 @@ export default function channels(state = initialState, action) {
                 ...state,
                 data: [...state.data, action.channel]
             };
+        case APPROVE_CHANNEL:
+            if (state.data.filter(channel => channel.name === action.channel.name).length === 0) {
+                return state;
+            }
+            const index = state.data.findIndex((obj => obj.name === action.channel.name));
+            console.log("index" + index);
+            state.data[index].approved = true;
+            return state;
         case RECEIVE_CHANNEL:
             if (state.data.filter(channel => channel.name === action.channel.name).length !== 0) {
                 return state;

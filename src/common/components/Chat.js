@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import Channels from './Channels';
+import CaseReport from './CaseReport';
 import * as actions from '../actions/actions';
 import * as authActions from '../actions/authActions';
 import TypingListItem from './TypingListItem';
@@ -75,6 +76,12 @@ export default class Chat extends Component {
         dispatch(actions.fetchMessages(channel.name));
     }
 
+    approveActivateCase(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        socket.emit('approve case', activeCase);
+        dispatch(actions.approveCase(channel));
+    }
+
     handleClickOnUser(user) {
         this.setState({privateChannelModal: true, targetedUser: user});
     }
@@ -107,7 +114,7 @@ export default class Chat extends Component {
     }
 
     render() {
-        const {messages, socket, channels, activeChannel, typers, dispatch, user, screenWidth} = this.props;
+        const {messages, socket, channels, activeChannel, typers, dispatch, user, screenWidth, activeCase} = this.props;
         const filteredMessages = messages.filter(message => message.channelID === activeChannel);
         const username = this.props.user.username;
         const dropDownMenu = (
@@ -167,21 +174,7 @@ export default class Chat extends Component {
             <div style={{margin: '0', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
                 {screenWidth < 500 ? mobileNav : bigNav}
                 <div className="main">
-                    <header style={{
-                        background: '#606090',
-                        color: '#F3F4F8 ',
-                        flexGrow: '0',
-                        order: '0',
-                        fontSize: '2.3em',
-                        paddingLeft: '0.2em'
-                    }}>
-                        <div>
-                            {activeChannel}
-                            {/*{activeChannel.caseLocation}*/}
-                            {/*{activeChannel.caseDescription}*/}
-                            {/*{activeChannel.efForce}*/}
-                        </div>
-                    </header>
+                    <CaseReport activeCase={activeCase} onClick={::this.approveActivateCase}/>
                     {PrivateMessageModal}
                     <ul style={{
                         background: '#6D76A2',
