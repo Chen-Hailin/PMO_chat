@@ -177,6 +177,9 @@ export default class Chat extends Component {
                     }}>
                         <div>
                             {activeChannel}
+                            {/*{activeChannel.caseLocation}*/}
+                            {/*{activeChannel.caseDescription}*/}
+                            {/*{activeChannel.efForce}*/}
                         </div>
                     </header>
                     {PrivateMessageModal}
