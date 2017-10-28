@@ -52,6 +52,9 @@ export default class Chat extends Component {
         socket.on('receive status change', channel =>
             dispatch(actions.receiveChannelStatus(channel))
         );
+        socket.on('receive channel update', channel =>
+            dispatch(actions.receiveChannelUpdate(channel))
+        );
     }
 
     componentDidUpdate() {
@@ -99,6 +102,13 @@ export default class Chat extends Component {
         activeCase.approved = false;
         socket.emit('channel status change', activeCase);
         dispatch(actions.withdrawApproval(channel));
+    }
+
+    handleUpdate(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        const newActiveCase = channel;
+        socket.emit('channel updated', newActiveCase);
+        dispatch(actions.updateCase(newActiveCase));
     }
 
     handleClickOnUser(user) {
@@ -193,7 +203,7 @@ export default class Chat extends Component {
             <div style={{margin: '0', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
                 {screenWidth < 500 ? mobileNav : bigNav}
                 <div className="main">
-                    <CaseReport activeCase={activeCase} onClick={::this.handleApproval}/>
+                    <CaseReport activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
                     {PrivateMessageModal}
                     <ul style={{
                         background: '#6D76A2',

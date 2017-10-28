@@ -29,6 +29,16 @@ module.exports = function (router) {
         });
     });
 
+    router.get('/channels/retrieve/:name', function(req, res) {
+       Channel.findOne({name: req.params.name}, null, function (err, data) {
+           if (err) {
+               console.log(err);
+               return res.status(500).json({msg: 'internal server error'});
+           }
+           res.json(data);
+       });
+    });
+
     // post a new user to channel list db
     router.post('/channels/new_channel', function (req, res) {
         var newChannel = new Channel(req.body);

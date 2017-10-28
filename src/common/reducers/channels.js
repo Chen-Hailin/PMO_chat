@@ -4,10 +4,12 @@ import {
     WITHDRAW_APPROVAL,
     RECEIVE_CHANNEL_STATUS,
     RECEIVE_CHANNEL,
+    UPDATE_CHANNEL,
     LOAD_CHANNELS,
     LOAD_CHANNELS_SUCCESS,
     LOAD_CHANNELS_FAIL,
-    AUTH_SIGNOUT_SUCCESS
+    AUTH_SIGNOUT_SUCCESS,
+    RECEIVE_CHANNEL_UPDATE
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -58,6 +60,28 @@ export default function channels(state = initialState, action) {
                 ...state,
                 data: [...state.data, action.channel]
             };
+        case UPDATE_CHANNEL:
+            if (state.data.filter(channel => channel.name === action.channel.name).length === 0) {
+                return state;
+            }
+            index = state.data.findIndex((obj => obj.name === action.channel.name));
+            state.data[index].approved = false;
+            state.data[index].caseDescription= action.channel.caseDescription;
+            state.data[index].caseLocation = action.channel.caseLocation;
+            state.data[index].efForce = action.channel.efForce;
+            console.log(state.data[index]);
+            return state;
+        case RECEIVE_CHANNEL_UPDATE:
+            if (state.data.filter(channel => channel.name === action.channel.name).length === 0) {
+                return state;
+            }
+            index = state.data.findIndex((obj => obj.name === action.channel.name));
+            state.data[index].approved = false;
+            state.data[index].caseDescription= action.channel.caseDescription;
+            state.data[index].caseLocation = action.channel.caseLocation;
+            state.data[index].efForce = action.channel.efForce;
+            console.log(state.data[index]);
+            return state;
         case LOAD_CHANNELS:
             return {
                 ...state,

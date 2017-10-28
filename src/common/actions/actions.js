@@ -60,6 +60,39 @@ export function withdrawApproval(channel) {
     }
 }
 
+export function updateCase(channel) {
+    return dispatch => {
+        return fetch('/api/channels/update', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(channel)
+        })
+            .catch(error => {
+                throw error
+            }).then(
+                // (val) => {
+                // },
+                () => {
+                    dispatch(updateChannel(channel))
+                })
+    }
+}
+
+export function updateChannel(channel) {
+    return {
+        type: types.UPDATE_CHANNEL,
+        channel
+    }
+}
+
+export function receiveChannelUpdate(channel) {
+    return {
+        type: types.RECEIVE_CHANNEL_UPDATE,
+        channel
+    }
+}
 
 export function receiveChannelStatus(channel) {
     return {
