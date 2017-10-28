@@ -41,7 +41,31 @@ module.exports = function (router) {
         });
     });
 
-    router.post('channels/:name/approve', function (req, res) {
+    router.post('/channels/approve', function (req, res) {
+        var curChannel = new Channel(req.body);
+        Channel.update({ name: curChannel.name }, { $set: { approved: true }}).exec();
+        res.json(curChannel);
+    });
 
+    router.post('/channels/withdraw', function (req, res) {
+        var curChannel = new Channel(req.body);
+        Channel.update({ name: curChannel.name }, { $set: { approved: false }}).exec();
+        res.json(curChannel);
+    });
+
+    router.post('/channels/update', function(req, res) {
+        var curChannel = new Channel(req.body);
+        Channel.findOne({ name: curChannel.name }, function (err, doc){
+            if (err) {
+                console.log(err);
+                return res.status(500).json({msg: 'internal server error'});
+            }
+            doc.caseDescription = curChannel.caseDescription;
+            doc.caseLocation = curChannel.caseLocation;
+            doc.efForce = curChannel.efForce;
+            doc.approved = false;
+            doc.save();
+            res.json(doc);
+        });
     });
 }

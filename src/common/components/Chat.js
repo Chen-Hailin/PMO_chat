@@ -76,10 +76,24 @@ export default class Chat extends Component {
         dispatch(actions.fetchMessages(channel.name));
     }
 
+    handleApproval(channel) {
+        if (channel.approved) {
+            this.withdrawApproval(channel);
+        } else {
+            this.approveActivateCase(channel);
+        }
+    }
+
     approveActivateCase(channel) {
         const {socket, activeCase, dispatch} = this.props;
         socket.emit('approve case', activeCase);
         dispatch(actions.approveCase(channel));
+    }
+
+    withdrawApproval(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        socket.emit('approve case', activeCase);
+        dispatch(actions.withdrawApproval(channel));
     }
 
     handleClickOnUser(user) {
@@ -174,7 +188,7 @@ export default class Chat extends Component {
             <div style={{margin: '0', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
                 {screenWidth < 500 ? mobileNav : bigNav}
                 <div className="main">
-                    <CaseReport activeCase={activeCase} onClick={::this.approveActivateCase}/>
+                    <CaseReport activeCase={activeCase} onClick={::this.handleApproval}/>
                     {PrivateMessageModal}
                     <ul style={{
                         background: '#6D76A2',

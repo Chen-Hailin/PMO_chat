@@ -55,8 +55,8 @@ app.use('/api', channelRouter);
 app.use('/', express.static(path.join(__dirname, '..', 'static')));
 
 app.get('/*', function(req, res) {
-  const history = createHistory()
-  const location = history.location
+  const history = createHistory();
+  const location = history.location;
   match({ routes, location }, (err, redirectLocation, renderProps) => {
 
     const initialState = {

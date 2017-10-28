@@ -12,10 +12,51 @@ function addMessage(message) {
     };
 }
 
-export function approveCase(channel) {
+export function approve(channel) {
     return {
         type: types.APPROVE_CHANNEL,
         channel
+    }
+}
+
+export function withdraw(channel) {
+    return {
+        type: types.WITHDRAW_APPROVAL,
+        channel
+    }
+}
+
+export function approveCase(channel) {
+    return dispatch => {
+        return fetch('/api/channels/approve', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(channel)
+        }).catch(error => {
+            throw error
+        }).then(
+            () => {
+                dispatch(approve(channel))
+            })
+    }
+}
+
+export function withdrawApproval(channel) {
+    return dispatch => {
+        return fetch('/api/channels/withdraw', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(channel)
+        }).catch(error => {
+            throw error
+        }).then(
+            () => {
+                dispatch(withdraw(channel))
+            })
     }
 }
 

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import * as actions from '../actions/actions';
-import {Modal, Glyphicon, Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 
 export default class CaseReport extends Component {
