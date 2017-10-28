@@ -2,6 +2,7 @@ import {
     ADD_CHANNEL,
     APPROVE_CHANNEL,
     WITHDRAW_APPROVAL,
+    RECEIVE_CHANNEL_STATUS,
     RECEIVE_CHANNEL,
     LOAD_CHANNELS,
     LOAD_CHANNELS_SUCCESS,
@@ -33,12 +34,20 @@ export default function channels(state = initialState, action) {
             state.data[index].approved = true;
             console.log(state.data[index]);
             return state;
-        case APPROVE_CHANNEL:
+        case WITHDRAW_APPROVAL:
             if (state.data.filter(channel => channel.name === action.channel.name).length === 0) {
                 return state;
             }
             index = state.data.findIndex((obj => obj.name === action.channel.name));
             state.data[index].approved = false;
+            console.log(state.data[index]);
+            return state;
+        case RECEIVE_CHANNEL_STATUS:
+            if (state.data.filter(channel => channel.name === action.channel.name).length === 0) {
+                return state;
+            }
+            index = state.data.findIndex((obj => obj.name === action.channel.name));
+            state.data[index].approved = action.channel.approved;
             console.log(state.data[index]);
             return state;
         case RECEIVE_CHANNEL:

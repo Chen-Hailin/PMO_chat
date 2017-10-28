@@ -1,4 +1,4 @@
-import {CHANGE_CHANNEL, APPROVE_CHANNEL, WITHDRAW_APPROVAL} from '../constants/ActionTypes';
+import {CHANGE_CHANNEL, APPROVE_CHANNEL, WITHDRAW_APPROVAL, RECEIVE_CHANNEL_STATUS} from '../constants/ActionTypes';
 
 const initialState = {
     name: 'Lobby',
@@ -20,6 +20,19 @@ export default function activeChannel(state = initialState, action) {
                 efForce: action.channel.efForce,
                 approved: action.channel.approved
             };
+        case RECEIVE_CHANNEL_STATUS:
+            if (action.channel.name === state.name) {
+                return {
+                    name: action.channel.name,
+                    id: action.channel.id,
+                    caseLocation: action.channel.caseLocation,
+                    caseDescription: action.channel.caseDescription,
+                    efForce: action.channel.efForce,
+                    approved: action.channel.approved
+                };
+            } else {
+                return state;
+            }
         case APPROVE_CHANNEL:
             console.log("another reducer receive");
             return {

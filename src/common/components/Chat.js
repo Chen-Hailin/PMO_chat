@@ -49,6 +49,9 @@ export default class Chat extends Component {
         socket.on('receive private channel', channel =>
             dispatch(actions.receiveRawChannel(channel))
         );
+        socket.on('receive status change', channel =>
+            dispatch(actions.receiveChannelStatus(channel))
+        );
     }
 
     componentDidUpdate() {
@@ -86,13 +89,15 @@ export default class Chat extends Component {
 
     approveActivateCase(channel) {
         const {socket, activeCase, dispatch} = this.props;
-        socket.emit('approve case', activeCase);
+        activeCase.approved = true;
+        socket.emit('channel status change', activeCase);
         dispatch(actions.approveCase(channel));
     }
 
     withdrawApproval(channel) {
         const {socket, activeCase, dispatch} = this.props;
-        socket.emit('approve case', activeCase);
+        activeCase.approved = false;
+        socket.emit('channel status change', activeCase);
         dispatch(actions.withdrawApproval(channel));
     }
 

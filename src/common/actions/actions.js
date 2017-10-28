@@ -60,6 +60,15 @@ export function withdrawApproval(channel) {
     }
 }
 
+
+export function receiveChannelStatus(channel) {
+    return {
+        type: types.RECEIVE_CHANNEL_STATUS,
+        channel
+    }
+}
+
+
 export function receiveRawMessage(message) {
     return {
         type: types.RECEIVE_MESSAGE,

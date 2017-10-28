@@ -20,11 +20,14 @@ exports = module.exports = function(io) {
     socket.on('typing', function (data) {
       socket.broadcast.to(data.channel).emit('typing bc', data.user);
     });
-    socket.on('stop javatyping', function (data) {
+    socket.on('stop typing', function (data) {
       socket.broadcast.to(data.channel).emit('stop typing bc', data.user);
     });
     socket.on('new private channel', function(socketID, channel) {
       socket.broadcast.to(socketID).emit('receive private channel', channel);
-    })
+    });
+    socket.on('channel status change', function (channel) {
+      socket.broadcast.emit('receive status change', channel);
+    });
   });
 };
