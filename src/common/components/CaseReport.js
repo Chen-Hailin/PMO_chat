@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Modal, Glyphicon, Input, Button} from 'react-bootstrap';
+import {Modal, Glyphicon, Input, Button, Col} from 'react-bootstrap';
 
 
 export default class CaseReport extends Component {
@@ -120,23 +120,28 @@ export default class CaseReport extends Component {
                     order: '0',
                     paddingLeft: '0.8em',
                     paddingRight: '1.0em',
-                    paddingBottom: '1.0em'
+                    paddingBottom: '1.0em',
                 }}>
-                    <h1>{activeCase.name}</h1>
-                    <ul style={{fontSize: '1.0em',}}>
-                        <li>
-                            {"Affected Location:" + activeCase.caseLocation}
-                        </li>
-                        <li>
-                            {activeCase.caseDescription}
-                        </li>
-                        <li>
-                            {"EF force requested: " + activeCase.efForce}
-                        </li>
-                    </ul>
-                    <Button bsSize="large" bsStyle="primary" onClick={() => onClick(activeCase)}>
-                        {message}
-                    </Button>
+                    <Col xs={12} md={6} >
+                        <h1>{activeCase.name}</h1>
+                        <ul style={{fontSize: '1.0em',}}>
+                            <li>
+                                {"Affected Location:" + activeCase.caseLocation}
+                            </li>
+                            <li>
+                                {activeCase.caseDescription}
+                            </li>
+                            <li>
+                                {"EF force requested: " + activeCase.efForce}
+                            </li>
+                        </ul>
+                        <Button bsSize="large" bsStyle="primary" onClick={() => onClick(activeCase)}>
+                            {message}
+                        </Button>
+                    </Col>
+                    <Col xs={12} md={6} style={{paddingTop:'1.0em'}}>
+                        <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" frameborder="0" allowfullscreen></iframe>
+                    </Col>
                 </div>
             );
         } else {
