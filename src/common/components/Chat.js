@@ -151,41 +151,15 @@ export default class Chat extends Component {
         const filteredMessages = messages.filter(message => message.channelID === activeChannel);
         const username = this.props.user.username;
         const dropDownMenu = (
-            <Row>
-                <Col xs={4}>
-                    <Avatar src={require('../../../static/PM.png')} style={{height:'43px',width:'32px'}} id='signout' className="img-responsive center-block"/>
-                </Col>
-                <Col xs={8}>
-                    <DropdownButton key={1} style={{background: grey600, width:'100%'}} bsStyle="primary"
-                                    title={username}>
-                        <MenuItem eventKey="4" onSelect={::this.handleSignOut}>Sign
-                            out</MenuItem>
-                    </DropdownButton>
-                </Col>
-                <hr/>
+            <Row center="xs">
+                <DropdownButton key={1} style={{background: grey600, width:'100%'}} bsStyle="primary" bsSize="large"
+                                title={username}>
+                    <MenuItem eventKey="4" onSelect={::this.handleSignOut} className="dropdown-link">Sign
+                        out</MenuItem>
+                </DropdownButton>
             </Row>
         );
-        // a pop up showed when click on a username in chat window
-        const PrivateMessageModal = (
-            <div>
-                <Modal bsSize="small" key={1} show={this.state.privateChannelModal}
-                       onHide={::this.closePrivateChannelModal}>
-                    <Modal.Header>
-                        {this.state.targetedUser.username}
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Button onClick={this.handleSendDirectMessage.bind(this)}>
-                            Direct Message
-                        </Button>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.closePrivateChannelModal.bind(this)}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        );
+
         const mobileNav = (
             <Navbar fixedTop style={{background: '#337ab7', color: 'white'}}>
                 <span style={{fontSize: '2em'}}>{username}</span>
@@ -210,38 +184,41 @@ export default class Chat extends Component {
             </Card>
         );
         return (
-            <grid fluid>
-                <Row style={{marginTop:'10%',marginLeft:'5%',marginRight:'5%'}}>
-                <Col xs={3} >
+            <Grid fluid>
+                <Row style={{marginTop:'20px',marginLeft:'15px',marginRight:'15px'}}>
+                <Col xs={2}>
                     {screenWidth < 500 ? mobileNav : bigNav}
                 </Col>
-                <Col xs={9}>
-                    <div className="main">
-                        <CaseReport activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
-                        {PrivateMessageModal}
-                        <ul style={{
-                            background: '#6D76A2',
-                            color: '#F3F4F8 ',
-                            wordWrap: 'break-word',
-                            margin: '0',
-                            overflowY: 'auto',
-                            padding: '0',
-                            paddingBottom: '1em',
-                            paddingTop: '1em',
-                            flexGrow: '1',
-                            order: '1'
-                        }} ref="messageList">
-                            {filteredMessages.map(message =>
+                <Col xs={10}>
+                    <Row style={{height:'45%', paddingBottom:'10px', width:'100%'}}>
+                        <CaseReport style={{height:'100%'}} activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
+                    </Row>
+                    <Row style={{height:'55%', width:'100%'}}>
+                        <Card>
+                            <ul style={{
+                              background: '#6D76A2',
+                              color: '#F3F4F8 ',
+                              wordWrap: 'break-word',
+                              margin: '0',
+                              overflowY: 'auto',
+                              padding: '0',
+                              paddingBottom: '1em',
+                              paddingTop: '1em',
+                              flexGrow: '1',
+                              order: '1'
+                            }} ref="messageList">
+                              {filteredMessages.map(message =>
                                 <MessageListItem handleClickOnUser={::this.handleClickOnUser} message={message}
                                                  key={message.id}/>
-                            )}
-                        </ul>
-                        <MessageComposer socket={socket} activeChannel={activeChannel} user={user}
-                                         onSave={::this.handleSave}/>
-                    </div>
+                              )}
+                            </ul>
+                            <MessageComposer socket={socket} activeChannel={activeChannel} user={user}
+                                             onSave={::this.handleSave}/>
+                        </Card>
+                    </Row>
                 </Col>
                 </Row>
-            </grid>
+            </Grid>
         );
     }
 }

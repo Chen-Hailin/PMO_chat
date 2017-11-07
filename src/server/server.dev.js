@@ -9,10 +9,12 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import React from 'react';
 import configureStore from '../common/store/configureStore'
-import { RouterContext, match } from 'react-router';
-import routes from '../common/routes';
 import createHistory from 'history/createMemoryHistory'
+import { RouterContext, match } from 'react-router';
+/*
+import routes from '../common/routes';
 import DevTools from '../common/containers/DevTools';
+*/
 import cors from 'cors';
 import webpack from 'webpack';
 import webpackConfig from '../../webpack.config.dev'
@@ -54,53 +56,7 @@ app.use('/api', channelRouter);
 
 app.use('/', express.static(path.join(__dirname, '..', 'static')));
 
-app.get('/*', function(req, res) {
-  const history = createHistory();
-  const location = history.location;
-  match({ routes, location }, (err, redirectLocation, renderProps) => {
-
-    const initialState = {
-      auth: {
-        user: {
-          username: 'tester123',
-          id: 0,
-          socketID: null
-        }
-      }
-    }
-    const store = configureStore(initialState);
-    // console.log(redirectLocation);
-    // if(redirectLocation) {
-    //   return res.status(302).end(redirectLocation);
-    // }
-
-
-    if(err) {
-      console.error(err);
-      return res.status(500).end('Internal server error');
-    }
-
-    if(!renderProps) {
-      return res.status(404).end('Not found');
-    }
-
-    const finalState = store.getState();
-    res.status(200).end(renderFullPage(finalState));
-  })
-})
-
-const server = app.listen(process.env.PORT, 'localhost', function(err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  console.log('server listening on port: %s', process.env.PORT);
-});
-
-const io = new SocketIo(server, {path: '/api/chat'});
-const socketEvents = require('./socketEvents')(io);
-
-function renderFullPage(initialState) {
+function renderFullPage(finalState) {
   return `
     <!doctype html>
     <html lang="en">
@@ -113,12 +69,39 @@ function renderFullPage(initialState) {
         <title>NESIMS-PMO</title>
       </head>
       <body>
-        <container id="react"></container>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+          window.__INITIAL_STATE__ = ${JSON.stringify(finalState)}
         </script>
+        <container id="react"></container>
         <script src="/dist/bundle.js"></script>
       </body>
     </html>
-  `
+  `;
 }
+
+app.get('/*', function(req, res) {
+  const initialState = {
+    auth: {
+      user: {
+        username: 'tester123',
+        id: 0,
+        socketID: null
+      }
+    }
+  }
+  const store = configureStore(initialState);
+  const finalState = store.getState();
+  res.status(200).end(renderFullPage(finalState));
+});
+
+const server = app.listen(process.env.PORT, 'localhost', function(err) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log('server listening on port: %s', process.env.PORT);
+});
+
+const io = new SocketIo(server, {path: '/api/chat'});
+const socketEvents = require('./socketEvents')(io);
+

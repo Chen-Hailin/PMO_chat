@@ -2,7 +2,12 @@
 a {
   text-decoration: none;
 }
-
+.addChannel {
+    height: 30px !important;
+    width: 30px !important;
+}
+.dropdown-link a {background: darkgrey!important; color: darkgrey;}
+.dropdown-menu {background: darkgrey!important;}
 html,
 body,
 container {

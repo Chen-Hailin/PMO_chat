@@ -7,7 +7,9 @@ import uuid from 'node-uuid';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-
+import {fullWhite, red500, grey400, grey500, grey600, yellow400} from 'material-ui/styles/colors';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
+let SelectableList = makeSelectable(List);
 export default class Channels extends Component {
 
     static propTypes = {
@@ -26,7 +28,8 @@ export default class Channels extends Component {
             caseLocation: '',
             efForce: '',
             accepted: false,
-            moreChannelsModal: false
+            moreChannelsModal: false,
+            curChannel: 0
         };
     }
 
@@ -35,6 +38,7 @@ export default class Channels extends Component {
             this.closeMoreChannelsModal();
         }
         this.props.onClick(channel);
+        this.state.curChannel = channel;
     }
 
     openAddChannelModal(event) {
@@ -194,38 +198,53 @@ export default class Channels extends Component {
             </div>
         );
         return (
-            <Row>
-                <Row>
-                    Active Cases
-                    <FloatingActionButton mini={true} onClick={::this.openAddChannelModal}>
-                        <ContentAdd />
-                    </FloatingActionButton>
+            <div>
+                <Row center="xs" middle="xs">
+                    <Col xs={6}>
+                        Active Cases
+                    </Col>
+                    <Col xs={6}>
+                        <FloatingActionButton mini={true} onClick={::this.openAddChannelModal} backgroundColor={grey500}>
+                            <ContentAdd />
+                        </FloatingActionButton>
+                    </Col>
                 </Row>
                 {newChannelModal}
-                <div>
-                    <ul style={{
-                        backgroung: '#252A45',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        listStyle: 'none',
-                        margin: '0',
-                        overflowY: 'auto',
-                        padding: '0'
-                    }}>
-                        {filteredChannels.map(channel =>
-                            <ChannelListItem style={{paddingLeft: '0.8em', background: '#252A45', height: '0.7em'}}
-                                             messageCount={messages.filter(msg => {
-                                                 return msg.channelID === channel.name;
-                                             }).length} channel={channel} key={channel.id}
-                                             onClick={::this.handleChangeChannel}/>
-                        )}
-                    </ul>
+                <Row>
+                    <SelectableList style={{width:'80%', marginLeft:'10%', marginRight:'10%', marginTop:'10px'}} value={this.state.curChannel}>
+                      {filteredChannels.map(channel =>
+                        <ChannelListItem style={{paddingLeft: '0.8em', background: '#252A45', height: '0.7em'}}
+                                         messageCount={messages.filter(msg => {
+                                           return msg.channelID === channel.name;
+                                         }).length} channel={channel} key={channel.id}
+                                         onClick={::this.handleChangeChannel}/>
+                      )}
+                    </SelectableList>
+
                     {moreChannelsBoolean &&
                     <a onClick={::this.openMoreChannelsModal} style={{'cursor': 'pointer', 'color': '#85BBE9'}}>
                         + {channels.length - 8} more...</a>}
                     {moreChannelsModal}
-                </div>
-            </Row>
+                </Row>
+            </div>
         );
     }
 }
+/*
+<ul style={{
+    display: 'flex',
+    flexDirection: 'column',
+    listStyle: 'none',
+    margin: '0',
+    overflowY: 'auto',
+    padding: '0'
+}}>
+    {filteredChannels.map(channel =>
+        <ChannelListItem style={{paddingLeft: '0.8em', background: '#252A45', height: '0.7em'}}
+                         messageCount={messages.filter(msg => {
+                             return msg.channelID === channel.name;
+                         }).length} channel={channel} key={channel.id}
+                         onClick={::this.handleChangeChannel}/>
+    )}
+</ul>
+ */

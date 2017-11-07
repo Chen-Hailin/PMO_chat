@@ -1,6 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import {Modal, Glyphicon, Input, Button, Col} from 'react-bootstrap';
-
+import {Modal, Glyphicon, Input, Button} from 'react-bootstrap';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {fullWhite, red500, grey400, grey600, yellow400} from 'material-ui/styles/colors';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class CaseReport extends Component {
 
@@ -62,7 +67,6 @@ export default class CaseReport extends Component {
     render() {
         const {activeCase, onClick, username} = this.props;
         const updateChannelModal = (
-            <div>
                 <Modal key={1} show={this.state.updateChannelModal} onHide={::this.closeUpdateChannelModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Update Case</Modal.Title>
@@ -106,77 +110,58 @@ export default class CaseReport extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
         );
         var message = "Approve";
         if (activeCase.approved)
             message = "Withdraw Approval";
-        if (username === 'pmo') {
-            return (
-                <div style={{
-                    background: '#606090',
-                    color: '#F3F4F8 ',
-                    flexGrow: '0',
-                    order: '0',
-                    paddingLeft: '0.8em',
-                    paddingRight: '1.0em',
-                    paddingBottom: '1.0em',
-                }}>
-                    <Col xs={12} md={6} >
-                        <h1>{activeCase.name}</h1>
-                        <ul style={{fontSize: '1.0em',}}>
-                            <li>
-                                {"Affected Location:" + activeCase.caseLocation}
-                            </li>
-                            <li>
-                                {activeCase.caseDescription}
-                            </li>
-                            <li>
-                                {"EF force requested: " + activeCase.efForce}
-                            </li>
-                        </ul>
-                        <Button bsSize="large" bsStyle="primary" onClick={() => onClick(activeCase)}>
-                            {message}
-                        </Button>
+
+        var status = "pending";
+        if (activeCase.approved)
+            status = "approved";
+        return (
+            <Grid style={{
+                background: grey600,
+                color: '#F3F4F8 ',
+                flexGrow: '0',
+                order: '0',
+                paddingLeft: '0.8em',
+                paddingRight: '1.0em',
+                paddingBottom: '1.0em',
+                width:'100%'
+            }}>
+                {updateChannelModal}
+                <Row style={{height:'100%'}}>
+                    <Col xs={8}>
+                        <Row style={{height:'20%', paddingBottom:'5px'}} top="xs">
+                            <p style={{fontSize:'24px'}}>   <b>{activeCase.name}</b> - {status}</p>
+                        </Row>
+                        <Row style={{height:'80%'}}>
+                            <ul style={{maxHeight: '100%', overflow:'auto', paddingTop:'10px'}} >
+                                <li style={{maxWidth:'100%'}}>
+                                    <p>{"Location:" + activeCase.caseLocation}</p>
+                                </li>
+                                <li style={{maxWidth:'100%'}}>
+                                    <p>{"Description:" + activeCase.caseDescription}</p>
+                                </li>
+                                <li style={{maxWidth:'100%'}}>
+                                    <p>{"EF force requested:" + activeCase.efForce}</p>
+                                </li>
+                            </ul>
+                        </Row>
                     </Col>
-                    <Col xs={12} md={6} style={{paddingTop:'1.0em'}}>
-                        <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" frameborder="0" allowfullscreen></iframe>
+                    <Col xs={4}>
+                        <Row style={{height:'70%'}}>
+                            <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen></iframe>
+                        </Row>
+                        <Row bottom="xs" style={{bottom:'0px', height:'30%'}}>
+                          {(username === 'pmo')?
+                            <RaisedButton label={message} onClick={() => onClick(activeCase)}/>
+                            :
+                            <RaisedButton label="Update Case" onClick={::this.openUpdateChannelModal}/>}
+                        </Row>
                     </Col>
-                </div>
-            );
-        } else {
-            var status = "pending";
-            if (activeCase.approved)
-                status = "approved";
-            return (
-                <div style={{
-                    background: '#606090',
-                    color: '#F3F4F8 ',
-                    flexGrow: '0',
-                    order: '0',
-                    paddingLeft: '0.8em',
-                    paddingRight: '1.0em',
-                    paddingBottom: '1.0em'
-                }}>
-                    {updateChannelModal}
-                    <h1>{activeCase.name}</h1>
-                    <h2>  {status}</h2>
-                    <ul style={{fontSize: '1.0em',}}>
-                        <li>
-                            {"Affected Location:" + activeCase.caseLocation}
-                        </li>
-                        <li>
-                            {activeCase.caseDescription}
-                        </li>
-                        <li>
-                            {"EF force requested: " + activeCase.efForce}
-                        </li>
-                    </ul>
-                    <Button bsSize="large" bsStyle="primary" onClick={::this.openUpdateChannelModal}>
-                        Update Case
-                    </Button>
-                </div>
+                </Row>
+            </Grid>
             );
         }
-    }
 }
