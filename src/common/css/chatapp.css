@@ -19,8 +19,7 @@ container {
 .nav {
   margin: 0;
   color: white;
-  background: #337ab7;
-  width: 21rem;
+  /*width: 21rem;*/
 -ms-flex: 0 1rem;
 -webkit-box-flex:  0;
 -moz-box-flex:  0;

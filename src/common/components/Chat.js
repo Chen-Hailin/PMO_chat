@@ -7,6 +7,10 @@ import * as actions from '../actions/actions';
 import * as authActions from '../actions/authActions';
 import TypingListItem from './TypingListItem';
 import {Modal, DropdownButton, MenuItem, Button, Navbar, NavDropdown, Nav, NavItem} from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {fullWhite, red500, grey400, grey600, yellow400} from 'material-ui/styles/colors';
+import {Avatar, DropDownMenu} from 'material-ui';
 
 export default class Chat extends Component {
 
@@ -147,13 +151,19 @@ export default class Chat extends Component {
         const filteredMessages = messages.filter(message => message.channelID === activeChannel);
         const username = this.props.user.username;
         const dropDownMenu = (
-            <div style={{background: '#3F96FF', 'width': '21rem', 'top': '0', alignSelf: 'baseline', padding: '0', margin: '0', order: '1'}}>
-                <DropdownButton key={1} style={{background: '#3F96FF', 'width': '21rem'}} id="user-menu" bsSize="large" bsStyle="primary"
-                                title={username}>
-                    <MenuItem style={{'width': '21rem'}} eventKey="4" onSelect={::this.handleSignOut}>Sign
-                        out</MenuItem>
-                </DropdownButton>
-            </div>
+            <Row>
+                <Col xs={4}>
+                    <Avatar src={require('../../../static/PM.png')} style={{height:'43px',width:'32px'}} id='signout' className="img-responsive center-block"/>
+                </Col>
+                <Col xs={8}>
+                    <DropdownButton key={1} style={{background: grey600, width:'100%'}} bsStyle="primary"
+                                    title={username}>
+                        <MenuItem eventKey="4" onSelect={::this.handleSignOut}>Sign
+                            out</MenuItem>
+                    </DropdownButton>
+                </Col>
+                <hr/>
+            </Row>
         );
         // a pop up showed when click on a username in chat window
         const PrivateMessageModal = (
@@ -191,71 +201,47 @@ export default class Chat extends Component {
             </Navbar>
         );
         const bigNav = (
-            <div className="nav">
-                {dropDownMenu}
-                <section style={{order: '2', marginTop: '1.5em'}}>
+            <Card style={{background: grey600, height:'100%'}}>
+                <grid fluid style={{'top': '0', alignSelf: 'baseline', padding: '0', margin: '0', order: '1'}}>
+                    {dropDownMenu}
                     <Channels socket={socket} onClick={::this.changeActiveChannel} channels={channels}
                               messages={messages} dispatch={dispatch}/>
-                </section>
-            </div>
+                </grid>
+            </Card>
         );
         return (
-            <div style={{margin: '0', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
-                {screenWidth < 500 ? mobileNav : bigNav}
-                <div className="main">
-                    <CaseReport activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
-                    {PrivateMessageModal}
-                    <ul style={{
-                        background: '#6D76A2',
-                        color: '#F3F4F8 ',
-                        wordWrap: 'break-word',
-                        margin: '0',
-                        overflowY: 'auto',
-                        padding: '0',
-                        paddingBottom: '1em',
-                        paddingTop: '1em',
-                        flexGrow: '1',
-                        order: '1'
-                    }} ref="messageList">
-                        {filteredMessages.map(message =>
-                            <MessageListItem handleClickOnUser={::this.handleClickOnUser} message={message}
-                                             key={message.id}/>
-                        )}
-                    </ul>
-                    <MessageComposer socket={socket} activeChannel={activeChannel} user={user}
-                                     onSave={::this.handleSave}/>
-                </div>
-                <footer style={{
-                    fontSize: '1em',
-                    position: 'fixed',
-                    bottom: '0.2em',
-                    left: '21.5rem',
-                    color: '#000000',
-                    width: '100%',
-                    opacity: '0.5'
-                }}>
-                    {typers.length === 1 &&
-                    <div>
-              <span>
-                <TypingListItem username={typers[0]} key={1}/>
-                <span> is typing</span>
-              </span>
-                    </div>}
-                    {typers.length === 2 &&
-                    <div>
-            <span>
-              <TypingListItem username={typers[0]} key={1}/>
-              <span> and </span>
-              <TypingListItem username={typers[1]} key={2}/>
-              <span> are typing</span>
-            </span>
-                    </div>}
-                    {typers.length > 2 &&
-                    <div>
-                        <span>Several people are typing</span>
-                    </div>}
-                </footer>
-            </div>
+            <grid fluid>
+                <Row style={{marginTop:'10%',marginLeft:'5%',marginRight:'5%'}}>
+                <Col xs={3} >
+                    {screenWidth < 500 ? mobileNav : bigNav}
+                </Col>
+                <Col xs={9}>
+                    <div className="main">
+                        <CaseReport activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
+                        {PrivateMessageModal}
+                        <ul style={{
+                            background: '#6D76A2',
+                            color: '#F3F4F8 ',
+                            wordWrap: 'break-word',
+                            margin: '0',
+                            overflowY: 'auto',
+                            padding: '0',
+                            paddingBottom: '1em',
+                            paddingTop: '1em',
+                            flexGrow: '1',
+                            order: '1'
+                        }} ref="messageList">
+                            {filteredMessages.map(message =>
+                                <MessageListItem handleClickOnUser={::this.handleClickOnUser} message={message}
+                                                 key={message.id}/>
+                            )}
+                        </ul>
+                        <MessageComposer socket={socket} activeChannel={activeChannel} user={user}
+                                         onSave={::this.handleSave}/>
+                    </div>
+                </Col>
+                </Row>
+            </grid>
         );
     }
 }

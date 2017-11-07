@@ -4,6 +4,9 @@ import ChannelListModalItem from './ChannelListModalItem';
 import {Modal, Glyphicon, Input, Button} from 'react-bootstrap';
 import * as actions from '../actions/actions';
 import uuid from 'node-uuid';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 export default class Channels extends Component {
 
@@ -191,24 +194,13 @@ export default class Channels extends Component {
             </div>
         );
         return (
-            <section>
-                <div style={{background: '#3F96FF', paddingTop: '0.8em', paddingBottom:'0.8em'}}>
-          <span style={{background: '#3F96FF', paddingLeft: '0.8em', fontSize: '1.2em'}}>
-            Active Cases
-            <button onClick={::this.openAddChannelModal} style={{
-                fontSize: '0.8em',
-                'background': 'Transparent',
-                marginLeft: '2.8em',
-                'backgroundRepeat': 'noRepeat',
-                'border': 'none',
-                'cursor': 'pointer',
-                'overflow': 'hidden',
-                'outline': 'none'
-            }}>
-              <Glyphicon glyph="plus"/>
-            </button>
-          </span>
-                </div>
+            <Row>
+                <Row>
+                    Active Cases
+                    <FloatingActionButton mini={true} onClick={::this.openAddChannelModal}>
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </Row>
                 {newChannelModal}
                 <div>
                     <ul style={{
@@ -233,7 +225,7 @@ export default class Channels extends Component {
                         + {channels.length - 8} more...</a>}
                     {moreChannelsModal}
                 </div>
-            </section>
+            </Row>
         );
     }
 }
