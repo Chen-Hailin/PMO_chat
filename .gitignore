@@ -174,4 +174,8 @@ db/
 *db/*
 *diagnostic.data*
 
+#node modules
+node_modules/
+*node_modules/*
+
 # dotenv environment variables file
