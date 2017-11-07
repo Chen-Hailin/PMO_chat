@@ -55,8 +55,8 @@ app.use('/api', channelRouter);
 app.use('/', express.static(path.join(__dirname, '..', 'static')));
 
 app.get('/*', function(req, res) {
-  const history = createHistory()
-  const location = history.location
+  const history = createHistory();
+  const location = history.location;
   match({ routes, location }, (err, redirectLocation, renderProps) => {
 
     const initialState = {
@@ -110,7 +110,7 @@ function renderFullPage(initialState) {
         <link rel="icon" href="./favicon.ico" type="image/x-icon" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <title>React Redux Socket.io Chat</title>
+        <title>NESIMS-PMO</title>
       </head>
       <body>
         <container id="react"></container>

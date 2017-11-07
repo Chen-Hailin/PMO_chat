@@ -19,6 +19,10 @@ export default class Channels extends Component {
         this.state = {
             addChannelModal: false,
             channelName: '',
+            caseDescription: '',
+            caseLocation: '',
+            efForce: '',
+            accepted: false,
             moreChannelsModal: false
         };
     }
@@ -41,7 +45,7 @@ export default class Channels extends Component {
     }
 
     handleModalChange(event) {
-        this.setState({channelName: event.target.value});
+        this.setState({[event.target.name]: event.target.value});
     }
 
     handleModalSubmit(event) {
@@ -56,15 +60,20 @@ export default class Channels extends Component {
             console.log(this.state.channelName);
             const newChannel = {
                 name: this.state.channelName.trim(),
-
+                caseDescription: this.state.caseDescription.trim(),
+                caseLocation: this.state.caseLocation.trim(),
+                efForce: this.state.efForce.trim(),
                 id: `${Date.now()}${uuid.v4()}`,
+                approved: false,
                 private: false
             };
             dispatch(actions.createChannel(newChannel));
             this.handleChangeChannel(newChannel);
             socket.emit('new channel', newChannel);
-            this.setState({channelName: ''});
             this.closeAddChannelModal();
+            this.setState({
+                channelName: ''
+            });
         }
     }
 
@@ -114,18 +123,9 @@ export default class Channels extends Component {
                                 hasFeedback
                                 name="channelName"
                                 autoFocus="true"
-                                placeholder="Enter the case id"
+                                placeholder="Enter new case id"
                                 value={this.state.channelName}
                                 onChange={::this.handleModalChange}
-                            />
-                            <Input
-                                ref="caseDescription"
-                                type="text"
-                                name="caseDescription"
-                                autoFocus="true"
-                                placeholder="Enter the case description"
-                                // value={this.state.channelName}
-                                // onChange={::this.handleModalChange}
                             />
                             <Input
                                 ref="caseLocation"
@@ -133,8 +133,18 @@ export default class Channels extends Component {
                                 name="caseLocation"
                                 autoFocus="true"
                                 placeholder="Enter the case location"
-                                // value={this.state.channelName}
-                                // onChange={::this.handleModalChange}
+                                value={this.state.caseLocation}
+                                onChange={::this.handleModalChange}
+                            />
+                            <textarea
+                                style={{width:'100%'}}
+                                ref="caseDescription"
+                                rows="5"
+                                name="caseDescription"
+                                autoFocus="true"
+                                placeholder="Enter the case description"
+                                value={this.state.caseDescription}
+                                onChange={::this.handleModalChange}
                             />
                             <Input
                                 ref="efForce"
@@ -142,8 +152,8 @@ export default class Channels extends Component {
                                 name="efForce"
                                 autoFocus="true"
                                 placeholder="Enter EF force required"
-                                // value={this.state.channelName}
-                                // onChange={::this.handleModalChange}
+                                value={this.state.efForce}
+                                onChange={::this.handleModalChange}
                             />
                         </form>
                     </Modal.Body>

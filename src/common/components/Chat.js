@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import Channels from './Channels';
+import CaseReport from './CaseReport';
 import * as actions from '../actions/actions';
 import * as authActions from '../actions/authActions';
 import TypingListItem from './TypingListItem';
@@ -48,6 +49,12 @@ export default class Chat extends Component {
         socket.on('receive private channel', channel =>
             dispatch(actions.receiveRawChannel(channel))
         );
+        socket.on('receive status change', channel =>
+            dispatch(actions.receiveChannelStatus(channel))
+        );
+        socket.on('receive channel update', channel =>
+            dispatch(actions.receiveChannelUpdate(channel))
+        );
     }
 
     componentDidUpdate() {
@@ -73,6 +80,35 @@ export default class Chat extends Component {
         socket.emit('join channel', channel);
         dispatch(actions.changeChannel(channel));
         dispatch(actions.fetchMessages(channel.name));
+    }
+
+    handleApproval(channel) {
+        if (channel.approved) {
+            this.withdrawApproval(channel);
+        } else {
+            this.approveActivateCase(channel);
+        }
+    }
+
+    approveActivateCase(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        activeCase.approved = true;
+        socket.emit('channel status change', activeCase);
+        dispatch(actions.approveCase(channel));
+    }
+
+    withdrawApproval(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        activeCase.approved = false;
+        socket.emit('channel status change', activeCase);
+        dispatch(actions.withdrawApproval(channel));
+    }
+
+    handleUpdate(channel) {
+        const {socket, activeCase, dispatch} = this.props;
+        const newActiveCase = channel;
+        socket.emit('channel updated', newActiveCase);
+        dispatch(actions.updateCase(newActiveCase));
     }
 
     handleClickOnUser(user) {
@@ -107,7 +143,7 @@ export default class Chat extends Component {
     }
 
     render() {
-        const {messages, socket, channels, activeChannel, typers, dispatch, user, screenWidth} = this.props;
+        const {messages, socket, channels, activeChannel, typers, dispatch, user, screenWidth, activeCase} = this.props;
         const filteredMessages = messages.filter(message => message.channelID === activeChannel);
         const username = this.props.user.username;
         const dropDownMenu = (
@@ -167,18 +203,7 @@ export default class Chat extends Component {
             <div style={{margin: '0', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
                 {screenWidth < 500 ? mobileNav : bigNav}
                 <div className="main">
-                    <header style={{
-                        background: '#606090',
-                        color: '#F3F4F8 ',
-                        flexGrow: '0',
-                        order: '0',
-                        fontSize: '2.3em',
-                        paddingLeft: '0.2em'
-                    }}>
-                        <div>
-                            {activeChannel}
-                        </div>
-                    </header>
+                    <CaseReport activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
                     {PrivateMessageModal}
                     <ul style={{
                         background: '#6D76A2',
