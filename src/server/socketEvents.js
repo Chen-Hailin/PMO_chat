@@ -3,19 +3,19 @@ exports = module.exports = function(io) {
     socket.join('Lobby');
     socket.on('chat mounted', function(user) {
       // TODO: Does the server need to know the user?
-      socket.emit('receive socket', socket.id)
+      socket.emit('receive socket', socket.id);
     })
     socket.on('leave channel', function(channel) {
-      socket.leave(channel)
+      socket.leave(channel);
     })
     socket.on('join channel', function(channel) {
-      socket.join(channel.name)
+      socket.join(channel.name);
     })
     socket.on('new message', function(msg) {
       socket.broadcast.to(msg.channelID).emit('new bc message', msg);
     });
     socket.on('new channel', function(channel) {
-      socket.broadcast.emit('new channel', channel)
+      socket.broadcast.emit('new channel', channel);
     });
     socket.on('typing', function (data) {
       socket.broadcast.to(data.channel).emit('typing bc', data.user);

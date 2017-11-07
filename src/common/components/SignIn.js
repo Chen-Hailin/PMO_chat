@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import * as authActions from '../actions/authActions';
-import {fullWhite, red500, grey400, grey600} from 'material-ui/styles/colors';
+import {fullWhite, red500, grey400, grey600, yellow400} from 'material-ui/styles/colors';
 import {TextField, IconButton} from 'material-ui';
 import Report from 'material-ui/svg-icons/content/report';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -64,7 +64,7 @@ class SignIn extends Component {
             </div>
             <div>
               <form style={{height: '20rem', justifyContent: 'center', textAlign:'center'}}>
-                <div style={{paddingRight:'48px'}}>
+                <div style={{/*paddingRight:'48px'*/}}>
                   <label style={{width:100, color:grey400}} >Username</label>
                   <TextField
                     name="username"
@@ -73,6 +73,9 @@ class SignIn extends Component {
                     value={this.state.username}
                     onChange={::this.handleChange}
                   />
+                  <IconButton href={'/signup/'} tooltip="Don't have account yet?" tooltipPosition="top-right">
+                    <Report color={fullWhite} hoverColor={yellow400}/>
+                  </IconButton>
                 </div>
                 <br/>
                 <div>
@@ -84,7 +87,7 @@ class SignIn extends Component {
                              ref="passwordInput"
                              type='password'
                   />
-                  <IconButton href={'/signup/'} tooltip="Forget Login Credentials?" tooltipPosition="top-right">
+                  <IconButton tooltip="Forget Login Credentials?" tooltipPosition="top-right">
                     <Report color={fullWhite} hoverColor={red500}/>
                   </IconButton>
                 </div>
