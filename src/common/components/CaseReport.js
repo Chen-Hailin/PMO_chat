@@ -135,7 +135,7 @@ export default class CaseReport extends Component {
                         <Row style={{height:'20%', paddingBottom:'5px'}} top="xs">
                             <p style={{fontSize:'24px'}}>   <b>{activeCase.name}</b> - {status}</p>
                         </Row>
-                        <Row style={{height:'80%'}}>
+                        <Row style={{height:'70%'}}>
                             <ul style={{maxHeight: '100%', overflow:'auto', paddingTop:'10px'}} >
                                 <li style={{maxWidth:'100%'}}>
                                     <p>{"Location:" + activeCase.caseLocation}</p>
@@ -148,16 +148,16 @@ export default class CaseReport extends Component {
                                 </li>
                             </ul>
                         </Row>
-                    </Col>
-                    <Col xs={4}>
-                        <Row style={{height:'70%'}}>
-                            <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen></iframe>
-                        </Row>
-                        <Row bottom="xs" style={{bottom:'0px', height:'30%'}}>
+                        <Row bottom="xs" end="xs" style={{bottom:'0px', height:'10%', marginRight:'10px'}}>
                           {(username === 'pmo')?
                             <RaisedButton label={message} onClick={() => onClick(activeCase)}/>
                             :
                             <RaisedButton label="Update Case" onClick={::this.openUpdateChannelModal}/>}
+                        </Row>
+                    </Col>
+                    <Col xs={4}>
+                        <Row style={{height:'100%'}}>
+                            <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen></iframe>
                         </Row>
                     </Col>
                 </Row>
