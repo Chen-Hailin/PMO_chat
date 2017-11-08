@@ -9,8 +9,10 @@ import TypingListItem from './TypingListItem';
 import {Modal, DropdownButton, MenuItem, Button, Navbar, NavDropdown, Nav, NavItem} from 'react-bootstrap';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {fullWhite, red500, grey400, grey600, yellow400} from 'material-ui/styles/colors';
+import {fullWhite, blueGrey50, grey400, grey600, grey200, grey100, grey900} from 'material-ui/styles/colors';
 import {Avatar, DropDownMenu} from 'material-ui';
+import Paper from 'material-ui/Paper';
+import Chip from 'material-ui/Chip';
 
 export default class Chat extends Component {
 
@@ -169,7 +171,7 @@ export default class Chat extends Component {
                     </Button>
                     <section style={{order: '2', marginTop: '1.5em'}}>
                         <Channels socket={socket} onClick={::this.changeActiveChannel} channels={channels}
-                                  messages={messages} dispatch={dispatch}/>
+                                  messages={messages} dispatch={dispatch} username={username}/>
                     </section>
                 </Navbar.Collapse>
             </Navbar>
@@ -179,13 +181,13 @@ export default class Chat extends Component {
                 <grid fluid style={{'top': '0', alignSelf: 'baseline', padding: '0', margin: '0', order: '1'}}>
                     {dropDownMenu}
                     <Channels socket={socket} onClick={::this.changeActiveChannel} channels={channels}
-                              messages={messages} dispatch={dispatch}/>
+                              messages={messages} dispatch={dispatch} username={username}/>
                 </grid>
             </Card>
         );
         return (
             <Grid fluid>
-                <Row style={{marginTop:'20px',marginLeft:'15px',marginRight:'15px'}}>
+                <Row style={{marginTop:'20px',marginLeft:'15px',marginRight:'15px',maxHeight:'550px'}}>
                 <Col xs={2}>
                     {screenWidth < 500 ? mobileNav : bigNav}
                 </Col>
@@ -194,10 +196,10 @@ export default class Chat extends Component {
                         <CaseReport style={{height:'100%'}} activeCase={activeCase} username={username} onClick={::this.handleApproval} onUpdateCMO={::this.handleUpdate}/>
                     </Row>
                     <Row style={{height:'55%', width:'100%'}}>
-                        <Card>
+                        <Paper style={{width:'100%', height:'100%'}}>
                             <ul style={{
-                              background: '#6D76A2',
-                              color: '#F3F4F8 ',
+                              background: blueGrey50,
+                              color: grey900,
                               wordWrap: 'break-word',
                               margin: '0',
                               overflowY: 'auto',
@@ -205,16 +207,17 @@ export default class Chat extends Component {
                               paddingBottom: '1em',
                               paddingTop: '1em',
                               flexGrow: '1',
-                              order: '1'
+                              order: '1',
+                              height:'80%'
                             }} ref="messageList">
                               {filteredMessages.map(message =>
                                 <MessageListItem handleClickOnUser={::this.handleClickOnUser} message={message}
                                                  key={message.id}/>
                               )}
                             </ul>
-                            <MessageComposer socket={socket} activeChannel={activeChannel} user={user}
+                            <MessageComposer style={{height:'20%'}} socket={socket} activeChannel={activeChannel} user={user}
                                              onSave={::this.handleSave}/>
-                        </Card>
+                        </Paper>
                     </Row>
                 </Col>
                 </Row>

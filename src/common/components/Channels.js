@@ -110,7 +110,7 @@ export default class Channels extends Component {
     }
 
     render() {
-        const {channels, messages} = this.props;
+        const {channels, messages, username} = this.props;
         const filteredChannels = channels.slice(0, 8);
         const moreChannelsBoolean = channels.length > 8;
         const restOfTheChannels = channels.slice(8);
@@ -199,16 +199,14 @@ export default class Channels extends Component {
         );
         return (
             <div>
-                <Row center="xs" middle="xs">
-                    <Col xs={6}>
-                        Active Cases
-                    </Col>
-                    <Col xs={6}>
+              {(username == 'cmo')?<Row center="xs" middle="xs" between="xs">
+                    <Col>Cases</Col>
+                    <Col>
                         <FloatingActionButton mini={true} onClick={::this.openAddChannelModal} backgroundColor={grey500}>
                             <ContentAdd />
                         </FloatingActionButton>
                     </Col>
-                </Row>
+                </Row>:null}
                 {newChannelModal}
                 <Row>
                     <SelectableList style={{width:'80%', marginLeft:'10%', marginRight:'10%', marginTop:'10px'}} value={this.state.curChannel}>
