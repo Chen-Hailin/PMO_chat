@@ -150,7 +150,7 @@ export default class CaseReport extends Component {
                         </Row>
                         <Row bottom="xs" end="xs" style={{bottom:'0px', height:'10%', marginRight:'10px'}}>
                           {(username === 'pmo')?
-                            <RaisedButton label={message} onClick={() => onClick(activeCase)}/>
+                            (!activeCase.approved)?<RaisedButton label={message} onClick={() => onClick(activeCase)}/>:null
                             :
                             <RaisedButton label="Update Case" onClick={::this.openUpdateChannelModal}/>}
                         </Row>

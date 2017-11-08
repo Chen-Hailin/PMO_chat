@@ -66,7 +66,7 @@ export default class MessageComposer extends Component {
             onChange={::this.handleChange}
             onKeyDown={::this.handleSubmit}
             style={{background:grey50}}
-            textareaStyle={{color:grey900}}
+            textareaStyle={{color:grey900, marginLeft:'5px'}}
           />
         );
     }
