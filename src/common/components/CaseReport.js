@@ -18,19 +18,23 @@ export default class CaseReport extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const activeCase = this.props.activeCase;
         this.state = {
             updateChannelModal: false,
-            caseDescription: activeCase.caseDescription,
-            caseLocation: activeCase.caseLocation,
-            efForce: activeCase.efForce,
+            caseDescription: "",
+            caseLocation: "",
+            efForce: "",
             accepted: false,
             moreChannelsModal: false
         };
     }
 
     openUpdateChannelModal(event) {
-        console.log("open modal called");
+        const activeCase = this.props.activeCase;
+        this.setState({
+            caseDescription: activeCase.caseDescription,
+            caseLocation: activeCase.caseLocation,
+            efForce: activeCase.efForce
+        });
         event.preventDefault();
         this.setState({updateChannelModal: true});
     }
@@ -157,7 +161,9 @@ export default class CaseReport extends Component {
                     </Col>
                     <Col xs={4}>
                         <Row style={{height:'100%'}}>
-                            <iframe src="https://www.youtube.com/embed/nN2ItObt2NE" style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen></iframe>
+                            <iframe src={"http://cz3003.herokuapp.com/cmo/"+activeCase.name+"/map"} style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen>
+                            </iframe>
+                          {/*<iframe src="http://cz3003.herokuapp.com/index/{activeCase.name}/map"></iframe>*/}
                         </Row>
                     </Col>
                 </Row>

@@ -1,5 +1,6 @@
 var Channel = require('../models/Channel');
 var bodyparser = require('body-parser');
+var twilioClient = require('../twilioClient');
 
 module.exports = function (router) {
     router.use(bodyparser.json());
@@ -49,6 +50,8 @@ module.exports = function (router) {
             }
             res.json(data);
         });
+        const messageToSend = "{new crisis case require approval} " + " [Case ID: " + newChannel.name + "] [Location: " + newChannel.caseLocation + "] [Case Description: " + newChannel.caseDescription + "] [EF Force Requested: " + newChannel.efForce + "]";
+        twilioClient.sendSms('+6591245795', messageToSend);
     });
 
     router.post('/channels/approve', function (req, res) {
@@ -76,6 +79,8 @@ module.exports = function (router) {
             doc.approved = false;
             doc.save();
             res.json(doc);
+            const messageToSend = "{crisis case updated}" + " [Case ID: " + curChannel.name + "] [Location: " + curChannel.caseLocation + "] [Case Description: " + curChannel.caseDescription + "] [EF Force Requested: " + curChannel.efForce + "]";
+            twilioClient.sendSms('+6591245795', messageToSend);
         });
     });
 }
