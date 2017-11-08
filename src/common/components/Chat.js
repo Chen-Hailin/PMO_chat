@@ -186,8 +186,8 @@ export default class Chat extends Component {
             </Card>
         );
         return (
-            <Grid fluid>
-                <Row style={{marginTop:'20px',marginLeft:'15px',marginRight:'15px',height:'550px'}}>
+            <Grid fluid style={{height:'100%'}}>
+                <Row style={{marginTop:'20px',marginLeft:'15px',marginRight:'15px', marginBottom:'20px', height:'100%'}}>
                 <Col xs={2}>
                     {screenWidth < 500 ? mobileNav : bigNav}
                 </Col>

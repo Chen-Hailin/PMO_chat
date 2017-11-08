@@ -10,6 +10,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {fullWhite, red500, grey400, grey500, grey600, yellow400} from 'material-ui/styles/colors';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 let SelectableList = makeSelectable(List);
+var fetch = require("node-fetch");
+
 export default class Channels extends Component {
 
     static propTypes = {
@@ -33,6 +35,41 @@ export default class Channels extends Component {
         };
     }
 
+    retrieveCase(event) {
+        console.log("2");
+        const payload = {
+            caseid: this.state.channelName
+        };
+        fetch('http://cz3003.herokuapp.com/cmo/getCase', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(function(res) {
+            console.log(res.status);
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                throw new Error(res.statusText);
+            }
+        })
+        .then( (json) => {
+            console.log(json);
+            this.setState({
+                caseDescription: json.caseDescription,
+                caseLocation: json.caseLocation,
+                efForce: json.efForce
+            });
+        })
+        .catch(function(err) {
+            console.log("catch error");
+            console.log(err);
+        });
+    }
+
     handleChangeChannel(channel) {
         if (this.state.moreChannelsModal) {
             this.closeMoreChannelsModal();
@@ -43,7 +80,13 @@ export default class Channels extends Component {
 
     openAddChannelModal(event) {
         event.preventDefault();
-        this.setState({addChannelModal: true});
+        this.setState({
+            addChannelModal: true,
+            channelName: '',
+            caseDescription: '',
+            caseLocation: '',
+            efForce: '',
+        });
     }
 
     closeAddChannelModal(event) {
@@ -166,6 +209,7 @@ export default class Channels extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={::this.closeAddChannelModal}>Cancel</Button>
+                        <Button onClick={::this.retrieveCase}>Retrieve Case</Button>
                         <Button disabled={this.validateChannelName() === 'error' && 'true'}
                                 onClick={::this.handleModalSubmit} type="submit">
                             Create New Case

@@ -6,6 +6,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
+var fetch = require("node-fetch");
 
 export default class CaseReport extends Component {
 
@@ -37,6 +38,57 @@ export default class CaseReport extends Component {
         });
         event.preventDefault();
         this.setState({updateChannelModal: true});
+    }
+
+    updateCase(event) {
+        const {activeCase, onUpdateCMO} = this.props;
+        const payload = {
+            caseid: activeCase.name
+        };
+        fetch('http://cz3003.herokuapp.com/cmo/getCase', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(function(res) {
+                console.log(res.status);
+                if (res.status === 200) {
+                    return res.json();
+                } else {
+                    throw new Error(res.statusText);
+                }
+            })
+            .then( (json) => {
+                console.log(json);
+                if (json.caseDescription === activeCase.caseDescription && json.caseLocation === activeCase.caseLocation && json.efForce === activeCase.efForce) {
+                    console.log("no change detected");
+                    throw new Error("False update");
+                } else {
+                    console.log("updating info");
+                    const newChannel = {
+                        name: activeCase.name,
+                        caseDescription: json.caseDescription,
+                        caseLocation: json.caseLocation,
+                        efForce: json.efForce,
+                        id: activeCase.id,
+                        approved: false,
+                        private: activeCase.private
+                    };
+                    onUpdateCMO(newChannel);
+                }
+                this.setState({
+                    caseDescription: json.caseDescription,
+                    caseLocation: json.caseLocation,
+                    efForce: json.efForce
+                });
+            })
+            .catch(function(err) {
+                console.log("catch error");
+                console.log(err);
+            });
     }
 
     closeUpdateChannelModal(event) {
@@ -128,14 +180,15 @@ export default class CaseReport extends Component {
                 color: '#F3F4F8 ',
                 flexGrow: '0',
                 order: '0',
-                paddingLeft: '0.8em',
-                paddingRight: '1.0em',
-                paddingBottom: '1.0em',
+                paddingTop: '1.8em',
+                paddingLeft: '1.3em',
+                paddingRight: '1.3em',
+                paddingBottom: '1.8em',
                 width:'100%'
             }}>
                 {updateChannelModal}
                 <Row style={{height:'100%'}}>
-                    <Col xs={8}>
+                    <Col xs={7} lg={5}>
                         <Row style={{height:'20%', paddingBottom:'5px'}} top="xs">
                             <p style={{fontSize:'24px'}}>   <b>{activeCase.name}</b> - {status}</p>
                         </Row>
@@ -156,12 +209,13 @@ export default class CaseReport extends Component {
                           {(username === 'pmo')?
                             (!activeCase.approved)?<RaisedButton label={message} onClick={() => onClick(activeCase)}/>:null
                             :
-                            <RaisedButton label="Update Case" onClick={::this.openUpdateChannelModal}/>}
+                            <RaisedButton label="Update Case" onClick={::this.updateCase}/>
+                          }
                         </Row>
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={5} lg={7}>
                         <Row style={{height:'100%'}}>
-                            <iframe src={"http://cz3003.herokuapp.com/cmo/"+activeCase.name+"/map"} style={{height:'100%',width:'100%'}} frameborder="0" allowfullscreen>
+                            <iframe src={"http://cz3003.herokuapp.com/cmo/"+activeCase.name+"/map"} style={{height:'100%',width:'100%'}} frameBorder="0" allowFullScreen>
                             </iframe>
                           {/*<iframe src="http://cz3003.herokuapp.com/index/{activeCase.name}/map"></iframe>*/}
                         </Row>
