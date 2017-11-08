@@ -11,7 +11,7 @@ const ChannelListItem = (props) => {
       value = {channel}
       primaryText = {<a className={classnames({ selected: channel === selectedChannel })}
                         style={{ cursor: 'hand', color: 'white', textAlign:'center'}}>
-          <h5>{channel.name}</h5>
+          <h5>CASE-{channel.name}</h5>
       </a>}
     />
   );

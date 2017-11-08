@@ -190,18 +190,18 @@ export default class CaseReport extends Component {
                 <Row style={{height:'100%'}}>
                     <Col xs={7} lg={5}>
                         <Row style={{height:'20%', paddingBottom:'5px'}} top="xs">
-                            <p style={{fontSize:'24px'}}>   <b>{activeCase.name}</b> - {status}</p>
+                            <p style={{fontSize:'24px'}}>   <b>CASE-{activeCase.name}</b> - {status}</p>
                         </Row>
                         <Row style={{height:'70%'}}>
                             <ul style={{maxHeight: '100%', overflow:'auto', paddingTop:'10px'}} >
                                 <li style={{maxWidth:'100%'}}>
-                                    <p>{"Location:" + activeCase.caseLocation}</p>
+                                    <p>{"Location: " + activeCase.caseLocation}</p>
                                 </li>
                                 <li style={{maxWidth:'100%'}}>
-                                    <p>{"Description:" + activeCase.caseDescription}</p>
+                                    <p>{"Description: " + activeCase.caseDescription}</p>
                                 </li>
                                 <li style={{maxWidth:'100%'}}>
-                                    <p>{"EF force requested:" + activeCase.efForce}</p>
+                                    <p>{"EF force requested: " + activeCase.efForce}</p>
                                 </li>
                             </ul>
                         </Row>
