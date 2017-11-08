@@ -3,7 +3,7 @@ import moment from 'moment';
 import {Input} from 'react-bootstrap';
 import uuid from 'node-uuid';
 import TextField from 'material-ui/TextField';
-import {fullWhite, grey50, grey400, grey600, yellow400, grey900, grey300} from 'material-ui/styles/colors';
+import {fullWhite, grey50, grey700, grey400, grey600, yellow400, grey900, grey300} from 'material-ui/styles/colors';
 
 export default class MessageComposer extends Component {
 
@@ -67,6 +67,7 @@ export default class MessageComposer extends Component {
             onKeyDown={::this.handleSubmit}
             style={{background:grey50}}
             textareaStyle={{color:grey900, marginLeft:'5px'}}
+            hintStyle={{color:grey700, marginLeft:'5px'}}
           />
         );
     }
