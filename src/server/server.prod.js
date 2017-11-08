@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import React from 'react';
 import configureStore from '../common/store/configureStore'
 import { RouterContext, match } from 'react-router';
-import routes from '../common/routes';
+//import routes from '../common/routes';
 import createHistory from 'history/createMemoryHistory'
 import cors from 'cors';
 
@@ -49,9 +49,9 @@ app.use('/', express.static(path.join(__dirname, '../..', 'static')));
 
 app.get('/*', function(req, res) {
   const history = createHistory()
-  const location = history.location
-
-  match({ routes, location }, (err, redirectLocation, renderProps) => {
+  const location = history.location;
+  /*
+  match({ NONE, location }, (err, redirectLocation, renderProps) => {
 
     if(err) {
       console.error(err);
@@ -76,6 +76,19 @@ app.get('/*', function(req, res) {
     const html = renderToString(InitialView)
     res.status(200).end(renderFullPage(html, initialState));
   })
+  */
+  const initialState = {
+    auth: {
+      user: {
+        username: 'tester123',
+        id: 0,
+        socketID: null
+      }
+    }
+  }
+  const store = configureStore(initialState);
+  const finalState = store.getState();
+  res.status(200).end(renderFullPage(finalState));
 })
 
 const server = app.listen(process.env.PORT, function(err) {
