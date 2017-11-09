@@ -7,6 +7,7 @@ import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 var fetch = require("node-fetch");
+const config = require('../../server/config');
 
 export default class CaseReport extends Component {
 
@@ -84,11 +85,30 @@ export default class CaseReport extends Component {
                     caseLocation: json.caseLocation,
                     efForce: json.efForce
                 });
+                fetch(config.FEEDBACKURL, {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'text/plain'
+                    },
+                    body: JSON.stringify(payload)
+                }).then(function(res) {
+                    if (res.status === 200) {
+                        console.log(res.json());
+                    } else {
+                        console.log(res.status);
+                        console.log("notification failed");
+                    }
+                }).catch(function(err) {
+                    console.log("catch inner error");
+                    console.log(err);
+                });
             })
             .catch(function(err) {
                 console.log("catch error");
                 console.log(err);
             });
+
     }
 
     closeUpdateChannelModal(event) {

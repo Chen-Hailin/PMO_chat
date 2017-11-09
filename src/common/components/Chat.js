@@ -13,6 +13,8 @@ import {fullWhite, blueGrey50, grey400, grey600, grey200, grey100, grey900} from
 import {Avatar, DropDownMenu} from 'material-ui';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
+var fetch = require('node-fetch');
+const config = require('../../server/config');
 
 export default class Chat extends Component {
 
@@ -101,6 +103,27 @@ export default class Chat extends Component {
         activeCase.approved = true;
         socket.emit('channel status change', activeCase);
         dispatch(actions.approveCase(channel));
+        const payload = {
+            caseid: activeCase.name
+        };
+        fetch(config.FEEDBACKURL, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(payload)
+        }).then(function(res) {
+            if (res.status === 200) {
+                console.log(res.json());
+            } else {
+                console.log(res.status);
+                console.log("notification failed");
+            }
+        }).catch(function(err) {
+            console.log("catch error");
+            console.log(err);
+        });
     }
 
     withdrawApproval(channel) {
