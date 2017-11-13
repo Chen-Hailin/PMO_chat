@@ -1,6 +1,6 @@
 # NESIMS-PMO
 
-A PMO subsystem that enables real-time communication between CMO and PMO.
+A PMO subsystem that enables authorisation and real-time communication between CMO and PMO.
 
 ## Use Guide
 
@@ -44,14 +44,14 @@ The online version is temporarily available on 13.228.200.19
 * Sign up two accounts with username 'cmo' and 'pmo' and login respectively in different browser windows to enable full functionality
 * The main page has case list on the left, case report on the upper right with chat interface on the bottom right. Input the message to the text bar at the bottom then press 'Enter' to send a message.
 * Login as CMO:
-** In main page, click on the '+' on the left to create a new case.
-** Enter the case id provided by CMO then click 'Retrieve Case' to pull the case from CMO server.
-** Click 'create case' to create the case.
-** Click 'UPDATE' if case need to be updated (new information available on CMO server).
-** Note: the retrieve case and update case would not work if there is no case with the specified case id in CMO server
+  * In main page, click on the '+' on the left to create a new case.
+  * Enter the case id provided by CMO then click 'Retrieve Case' to pull the case from CMO server.
+  * Click 'create case' to create the case.
+  * Click 'UPDATE' if case need to be updated (new information available on CMO server).
+  * Note: the retrieve case and update case would not work if there is no case with the specified case id in CMO server
 * Login as PMO:
-** Newly created case shall be available.
-** Click 'APPROVE' to approve the case. The approval would be withdrawn if case is updated.
-** The CMO system would be notified upon approval.
+  * Newly created case shall be available.
+  * Click 'APPROVE' to approve the case. The approval would be withdrawn if case is updated.
+  * The CMO system would be notified upon approval.
 
 
